@@ -1,0 +1,219 @@
+{
+	"info": {
+		"_postman_id": "f1bf7a0a-4524-4c81-a4fc-cb6d39bf4d44",
+		"name": "Virtual Campus (COE)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30747852"
+	},
+	"item": [
+		{
+			"name": "Get all Rooms",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{apiPrefix}}/api/room",
+					"host": [
+						"{{apiPrefix}}"
+					],
+					"path": [
+						"api",
+						"room"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all Users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{apiPrefix}}/api/user",
+					"host": [
+						"{{apiPrefix}}"
+					],
+					"path": [
+						"api",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add room",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"room_name\" : \"room A\",\r\n    \"users\" : \"667f0e92d257b23f56b0033a\",\r\n    \"description\" : \"this is a room A\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{apiPrefix}}/api/room",
+					"host": [
+						"{{apiPrefix}}"
+					],
+					"path": [
+						"api",
+						"room"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "user A",
+							"type": "text"
+						},
+						{
+							"key": "position",
+							"value": "position A",
+							"type": "text"
+						},
+						{
+							"key": "image",
+							"type": "file",
+							"src": []
+						}
+					]
+				},
+				"url": {
+					"raw": "{{apiPrefix}}/api/user",
+					"host": [
+						"{{apiPrefix}}"
+					],
+					"path": [
+						"api",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update room",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"room_name\" : \"room AB\",\r\n    \"description\" : \"this is a room AB\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{apiPrefix}}/api/room/:id",
+					"host": [
+						"{{apiPrefix}}"
+					],
+					"path": [
+						"api",
+						"room",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "668042e8e45ffcd3583cb426"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update user",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "position",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "image",
+							"type": "file",
+							"src": []
+						}
+					]
+				},
+				"url": {
+					"raw": "{{apiPrefix}}/api/user/:id",
+					"host": [
+						"{{apiPrefix}}"
+					],
+					"path": [
+						"api",
+						"user",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "apiPrefix",
+			"value": "http://localhost:6455",
+			"type": "string"
+		}
+	]
+}
