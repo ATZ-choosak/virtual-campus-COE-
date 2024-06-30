@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { login } from "./api/apiFunctions";
 
 function App() {
   const [year, setYear] = useState("");
@@ -8,21 +9,30 @@ function App() {
     setYear(date.getFullYear());
   }, []);
 
+  const submit = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const formProps = Object.fromEntries(formData);
+    login(formProps).then((res) => console.log(res));
+  };
+
   return (
     <div className="container mx-auto">
       <div className="flex flex-col items-center w-96 mx-auto space-y-5 text-center mt-28 p-4">
         <img className="w-40 h-40 object-cover" src="PSU-Logo.png" alt="logo" />
         <p className="text-lg font-bold">Login to Virtual Campus Admin</p>
-        <form className="flex flex-col w-full space-y-5">
+        <form onSubmit={submit} className="flex flex-col w-full space-y-5">
           <input
             className="bg-gray-100 p-4 rounded-lg outline-none"
             type="text"
             placeholder="Username"
+            name="username"
           />
           <input
             className="bg-gray-100 p-4 rounded-lg outline-none"
             type="password"
             placeholder="Password"
+            name="password"
           />
           <button
             className="text-white bg-blue-700 outline-none p-4 rounded-lg"
