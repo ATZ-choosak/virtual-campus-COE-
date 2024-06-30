@@ -12,7 +12,13 @@ const roomRouter = require("./router/roomRouter")
 const userRouter = require("./router/userRouter")
 
 // Middleware to parse JSON bodies
-app.use(cors())
+app.use(
+    cors({
+      origin: process.env.PRODUCTION ? "*" : "http://localhost:3000",
+      methods: "GET,POST,PUT,DELETE",
+      credentials: true,
+    })
+  );
 app.use(express.json());
 app.use('/images', express.static('public/images'));
 
