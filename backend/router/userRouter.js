@@ -8,7 +8,7 @@ const jwtValidate = require('../middleware/jwtValidate');
 // Multer storage configuration
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'public/uploads'); // Store files in public/uploads folder
+        cb(null, '/uploads'); // Store files in public/uploads folder
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + path.extname(file.originalname)); // Use a unique filename

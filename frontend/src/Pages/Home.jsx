@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getAllRooms } from "../api/apiFunctions";
 import LoadingIcon from "../Components/LoadingIcon";
+import config from "../config";
 
 function Home() {
   const [data, setData] = useState([]);
@@ -34,7 +35,7 @@ function Home() {
                   <div className="flex items-center space-x-2" key={user._id}>
                     <img
                       className="w-10 rounded-full h-10 object-cover"
-                      src={user.image}
+                      src={`${config.apiUrl}/${user.image}`}
                       alt="profile"
                     />
                     <p className="text-xs">{user.name}</p>
