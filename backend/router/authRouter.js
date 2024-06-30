@@ -8,21 +8,29 @@ router.post("/login", async (req, res) => {
 
     const { username, password } = req.body
 
-    let db_admin = await Admin.findOne({username})
+    let db_admin = await Admin.findOne({ username })
 
-    if (username === db_admin.username && password === db_admin.password && db_admin) {
+    if (db_admin) {
+        if (username === db_admin.username && password === db_admin.password) {
 
-        const access_token = jwtGenerate(`${username} role admin`)
+            const access_token = jwtGenerate(`${username} role admin`)
 
-        res.json({
-            access_token
-        })
+            res.json({
+                access_token
+            })
 
+        } else {
+            res.status(400).json({
+                message: "Username or Password Incorrect."
+            })
+        }
     } else {
         res.status(400).json({
-            message: "Username or Password Incorrect."
+            message: "No username in database."
         })
     }
+
+
 
 })
 
