@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
+const cors = require("cors")
 
 //ENV
 require('dotenv').config()
@@ -11,6 +12,7 @@ const roomRouter = require("./router/roomRouter")
 const userRouter = require("./router/userRouter")
 
 // Middleware to parse JSON bodies
+app.use(cors())
 app.use(express.json());
 app.use('/images', express.static('public/images'));
 
