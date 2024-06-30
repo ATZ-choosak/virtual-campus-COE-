@@ -14,7 +14,9 @@ const login = async (data) => {
 
     let token = await res.json()
 
-    localStorage.setItem("access_token" , token.access_token)
+    if (token.access_token) {
+      localStorage.setItem("access_token", token.access_token)
+    }
 
     return token;
 

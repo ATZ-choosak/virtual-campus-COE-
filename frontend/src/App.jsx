@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { login } from "./api/apiFunctions";
 import { useNavigate } from "react-router-dom";
+import { Bounce, toast } from "react-toastify";
 
 function App() {
   const [year, setYear] = useState("");
@@ -16,18 +17,24 @@ function App() {
     e.preventDefault();
     const formData = new FormData(e.target);
     const formProps = Object.fromEntries(formData);
-    login({ username: formProps.username, password: formProps.password }).then(
-      (res) => {
-        if (res) {
+    login({ username: formProps.username, password: formProps.password })
+      .then((res) => {
+        if (res.access_token) {
           navigate("Home");
+        } else {
+          toast.error(res.message, {
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: false,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
         }
-
-        console.log(res)
-
-      }
-      
-      
-    ).catch(err => console.log(err))
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
