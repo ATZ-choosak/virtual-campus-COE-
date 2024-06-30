@@ -1,73 +1,100 @@
-const express = require('express')
-const router = express.Router()
-
-//Model
+const express = require('express');
+const multer = require('multer');
+const path = require('path');
+const router = express.Router();
 const { User } = require('../models/User'); // Import User model
 
-router.put("/user/:id", async (req, res) => {
-    const id = req.params.id;
+// Multer storage configuration
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/uploads'); // Store files in public/uploads folder
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname)); // Use a unique filename
+    }
+});
+
+// Set up Multer middleware
+const upload = multer({ storage: storage });
+
+// Middleware for error handling
+const asyncHandler = fn => (req, res, next) =>
+    Promise.resolve(fn(req, res, next)).catch(next);
+
+// Route to get all users with optional filtering by name
+router.get("/user", asyncHandler(async (req, res) => {
+    const { name } = req.query;
+    let query = {};
+
+    if (name) {
+        query.name = new RegExp(name, 'i'); // Case insensitive search for user name
+    }
+
+    const users = await User.find(query);
+    res.json(users);
+}));
+
+// Route to get a user by ID
+router.get("/user/:id", asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const user = await User.findById(id);
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
+    }
+    res.json(user);
+}));
+
+// Route to add a new user with image upload
+router.post("/user", upload.single('image'), asyncHandler(async (req, res) => {
+    const { name, position } = req.body;
+    const image = req.file ? req.file.path : '';
+
+    if (!name || !position || !image) {
+        return res.status(400).json({ message: "All fields are required" });
+    }
+
+    const newUser = new User({ name, position, image });
+    await newUser.save();
+    res.status(200).json(newUser);
+}));
+
+// Route to update a user by ID
+router.put("/user/:id", upload.single('image'), asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { name, position } = req.body;
+    let updateFields = { name, position };
+
+    // Check if image is uploaded
+    if (req.file) {
+        updateFields.image = req.file.path;
+    }
+
     try {
-        const updatedUser = await User.findByIdAndUpdate(id, req.body, { new: true });
+        const updatedUser = await User.findByIdAndUpdate(id, updateFields, { new: true });
         if (!updatedUser) {
             return res.status(404).json({ message: "User not found" });
         }
         res.json(updatedUser);
-        console.log("User updated successfully");
     } catch (error) {
         console.error("Error updating user:", error);
         res.status(500).json({ message: "Internal server error" });
     }
-});
-
-// Route to add a new user
-router.post("/user", async (req, res) => {
-    const { name, position, image } = req.body;
-    try {
-        const newUser = new User({ name, position, image });
-        await newUser.save();
-        res.status(200).json(newUser);
-    } catch (error) {
-        console.error("Error adding user:", error);
-        res.status(500).json({ message: "Internal server error" });
-    }
-});
-
-// Route to get all users
-router.get("/user", async (req, res) => {
-    try {
-        const users = await User.find();
-        res.json(users);
-        console.log("ReadDataSuccess");
-    } catch (error) {
-        console.error("Error fetching users:", error);
-        res.status(500).json({ message: "Internal server error" });
-    }
-});
+}));
 
 // Route to delete a user by ID
-router.delete("/user/:id", async (req, res) => {
-    const id = req.params.id;
-    try {
-        const user = await User.findByIdAndDelete(id);
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
-        res.json({ message: "User deleted successfully" });
-    } catch (error) {
-        console.error("Error deleting user:", error);
-        res.status(500).json({ message: "Internal server error" });
+router.delete("/user/:id", asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const user = await User.findByIdAndDelete(id);
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
     }
-});
+    res.json({ message: "User deleted successfully" });
+}));
 
 // Route to delete all users
-router.delete("/users", async (req, res) => {
-    try {
-        await User.deleteMany({});
-        res.json({ message: "All users deleted successfully" });
-    } catch (error) {
-        console.error("Error deleting users:", error);
-        res.status(500).json({ message: "Internal server error" });
-    }
-});
+router.delete("/users", asyncHandler(async (req, res) => {
+    await User.deleteMany({});
+    res.json({ message: "All users deleted successfully" });
+}));
 
-module.exports = router
+module.exports = router;

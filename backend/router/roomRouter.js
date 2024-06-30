@@ -1,87 +1,84 @@
-const express = require('express')
-
-const router = express.Router()
-
-//Model
+const express = require('express');
+const router = express.Router();
 const { Room } = require('../models/Room'); // Import Room model
+const { User } = require('../models/User'); // Import User model
 
-// Route to get all rooms
-router.get("/room", async (req, res) => {
-    try {
-        const rooms = await Room.find().populate('users');
-        res.json(rooms);
-    } catch (error) {
-        console.error("Error fetching rooms:", error);
-        res.status(500).json({ message: "Internal server error" });
+// Middleware for error handling
+const asyncHandler = fn => (req, res, next) =>
+    Promise.resolve(fn(req, res, next)).catch(next);
+
+// Route to get all rooms with optional filtering by room_name and user_name
+router.get("/room", asyncHandler(async (req, res) => {
+    const { room_name, user_name } = req.query;
+    let query = {};
+
+    if (room_name) {
+        query.room_name = new RegExp(room_name, 'i'); // Case insensitive search
     }
-});
+
+    if (user_name) {
+        const users = await User.find({ name: new RegExp(user_name, 'i') }); // Find users by name
+        const userIds = users.map(user => user._id); // Extract user IDs
+        query.users = { $in: userIds }; // Find rooms with these user IDs
+    }
+
+    const rooms = await Room.find(query).populate('users');
+    res.json(rooms);
+}));
 
 // Route to get a room by ID
-router.get("/room/:id", async (req, res) => {
-    const id = req.params.id;
-    try {
-        const room = await Room.findById(id).populate('users');
-        if (!room) {
-            return res.status(404).json({ message: "Room not found" });
-        }
-        res.json(room);
-    } catch (error) {
-        console.error("Error fetching room:", error);
-        res.status(500).json({ message: "Internal server error" });
+router.get("/room/:id", asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const room = await Room.findById(id).populate('users');
+    if (!room) {
+        return res.status(404).json({ message: "Room not found" });
     }
-});
+    res.json(room);
+}));
 
 // Route to add a new room
-router.post("/room", async (req, res) => {
-    const { room_name, users , description } = req.body;
-    try {
-        const newRoom = new Room({ room_name, users, description });
-        await newRoom.save();
-        res.status(200).json(newRoom);
-    } catch (error) {
-        console.error("Error adding room:", error);
-        res.status(500).json({ message: "Internal server error" });
+router.post("/room", asyncHandler(async (req, res) => {
+    const { room_name, users, description } = req.body;
+
+    if (!room_name || !users || !description) {
+        return res.status(400).json({ message: "All fields are required" });
     }
-});
-router.put("/room/:id", async (req, res) => {
-    const id = req.params.id;
-    try {
-        const updatedRoom = await Room.findByIdAndUpdate(id, req.body, { new: true });
-        if (!updatedRoom) {
-            return res.status(404).json({ message: "Room not found" });
-        }
-        res.json(updatedRoom);
-        console.log("Room updated successfully");
-    } catch (error) {
-        console.error("Error updating room:", error);
-        res.status(500).json({ message: "Internal server error" });
+
+    const newRoom = new Room({ room_name, users, description });
+    await newRoom.save();
+    res.status(200).json(newRoom);
+}));
+
+// Route to update a room by ID
+router.put("/room/:id", asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const updatedRoom = await Room.findByIdAndUpdate(id, req.body, { new: true });
+    if (!updatedRoom) {
+        return res.status(404).json({ message: "Room not found" });
     }
-});
+    res.json(updatedRoom);
+}));
 
 // Route to delete a room by ID
-router.delete("/room/:id", async (req, res) => {
-    const id = req.params.id;
-    try {
-        const room = await Room.findByIdAndDelete(id);
-        if (!room) {
-            return res.status(404).json({ message: "Room not found" });
-        }
-        res.json({ message: "Room deleted successfully" });
-    } catch (error) {
-        console.error("Error deleting room:", error);
-        res.status(500).json({ message: "Internal server error" });
+router.delete("/room/:id", asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const room = await Room.findByIdAndDelete(id);
+    if (!room) {
+        return res.status(404).json({ message: "Room not found" });
     }
-});
+    res.json({ message: "Room deleted successfully" });
+}));
 
 // Route to delete all rooms
-router.delete("/rooms", async (req, res) => {
-    try {
-        await Room.deleteMany({});
-        res.json({ message: "All rooms deleted successfully" });
-    } catch (error) {
-        console.error("Error deleting rooms:", error);
-        res.status(500).json({ message: "Internal server error" });
-    }
+router.delete("/rooms", asyncHandler(async (req, res) => {
+    await Room.deleteMany({});
+    res.json({ message: "All rooms deleted successfully" });
+}));
+
+// Global error handler
+router.use((err, req, res, next) => {
+    console.error("Internal server error:", err);
+    res.status(500).json({ message: "Internal server error" });
 });
 
-module.exports = router
+module.exports = router;

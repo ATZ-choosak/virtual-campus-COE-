@@ -20,7 +20,9 @@ app.use(
     })
   );
 app.use(express.json());
-app.use('/images', express.static('public/images'));
+app.use('//uploads', express.static('public/uploads'));
+
+
 
 //Use Router
 app.use("/api" , roomRouter)
@@ -36,6 +38,7 @@ const connectDB = async () => {
         process.exit(1); // Exit the process with a failure code
     }
 };
+
 
 // Connect to the database before starting the server
 connectDB();
