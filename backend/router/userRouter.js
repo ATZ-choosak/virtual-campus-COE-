@@ -3,6 +3,7 @@ const multer = require('multer');
 const path = require('path');
 const router = express.Router();
 const { User } = require('../models/User'); // Import User model
+const jwtValidate = require('../middleware/jwtValidate');
 
 // Multer storage configuration
 const storage = multer.diskStorage({

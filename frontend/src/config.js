@@ -1,5 +1,6 @@
 const config = {
-    apiPrefix: 'https://virtual-campus-coe-41qi.vercel.app/api',
+    apiPrefix: 'https://virtual-campus-coe.vercel.app/api',
+    authPrefix: 'https://virtual-campus-coe.vercel.app/auth'
 }
 
 

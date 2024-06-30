@@ -10,6 +10,7 @@ require('dotenv').config()
 
 const roomRouter = require("./router/roomRouter")
 const userRouter = require("./router/userRouter")
+const authRouter = require("./router/authRouter")
 
 // Middleware to parse JSON bodies
 app.use(
@@ -20,13 +21,14 @@ app.use(
     })
   );
 app.use(express.json());
-app.use('//uploads', express.static('public/uploads'));
+app.use('/uploads', express.static('public/uploads'));
 
 
 
 //Use Router
 app.use("/api" , roomRouter)
 app.use("/api" , userRouter)
+app.use("/auth" , authRouter)
 
 // Database connection
 const connectDB = async () => {
