@@ -185,8 +185,61 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.collectionVariables.set(\"bearerToken\", jsonData.access_token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"virtualAdmin\",\r\n    \"password\" : \"virtual@admin@coe6455\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://virtual-campus-coe.vercel.app/auth/login",
+					"protocol": "https",
+					"host": [
+						"virtual-campus-coe",
+						"vercel",
+						"app"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
 		}
 	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{bearerToken}}",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",
@@ -212,8 +265,12 @@
 	"variable": [
 		{
 			"key": "apiPrefix",
-			"value": "http://localhost:6455",
+			"value": "https://virtual-campus-coe.vercel.app",
 			"type": "string"
+		},
+		{
+			"key": "bearerToken",
+			"value": ""
 		}
 	]
 }
