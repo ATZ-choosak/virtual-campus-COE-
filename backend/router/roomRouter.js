@@ -4,6 +4,7 @@ const router = express.Router()
 
 //Model
 const { Room } = require('../models/Room'); // Import Room model
+const jwtValidate = require('../middleware/jwtValidate');
 
 // Route to get all rooms
 router.get("/room", async (req, res) => {
@@ -32,8 +33,8 @@ router.get("/room/:id", async (req, res) => {
 });
 
 // Route to add a new room
-router.post("/room", async (req, res) => {
-    const { room_name, users , description } = req.body;
+router.post("/room", jwtValidate, async (req, res) => {
+    const { room_name, users, description } = req.body;
     try {
         const newRoom = new Room({ room_name, users, description });
         await newRoom.save();
@@ -43,7 +44,7 @@ router.post("/room", async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 });
-router.put("/room/:id", async (req, res) => {
+router.put("/room/:id", jwtValidate, async (req, res) => {
     const id = req.params.id;
     try {
         const updatedRoom = await Room.findByIdAndUpdate(id, req.body, { new: true });
@@ -59,7 +60,7 @@ router.put("/room/:id", async (req, res) => {
 });
 
 // Route to delete a room by ID
-router.delete("/room/:id", async (req, res) => {
+router.delete("/room/:id", jwtValidate, async (req, res) => {
     const id = req.params.id;
     try {
         const room = await Room.findByIdAndDelete(id);
@@ -74,7 +75,7 @@ router.delete("/room/:id", async (req, res) => {
 });
 
 // Route to delete all rooms
-router.delete("/rooms", async (req, res) => {
+router.delete("/rooms", jwtValidate, async (req, res) => {
     try {
         await Room.deleteMany({});
         res.json({ message: "All rooms deleted successfully" });

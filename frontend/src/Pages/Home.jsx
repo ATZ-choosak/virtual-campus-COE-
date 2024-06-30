@@ -1,17 +1,26 @@
 import { useEffect, useState } from "react";
 import { getAllRooms } from "../api/apiFunctions";
+import LoadingIcon from "../Components/LoadingIcon";
 
 function Home() {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const fetch_room = async () => {
+      let rooms = await getAllRooms();
 
-    getAllRooms().then(res => setData(res))
-    
+      setData(rooms);
+
+      setLoading(false);
+    };
+
+    fetch_room();
   }, []);
 
   return (
     <div className="container mx-auto">
+      <LoadingIcon Open={loading} />
       <div className="max-w-2xl mx-auto space-y-2 gap-2 grid grid-cols-3 p-2">
         {data.map((data) => (
           <div className="p-2 shadow-md rounded-md space-y-4" key={data._id}>

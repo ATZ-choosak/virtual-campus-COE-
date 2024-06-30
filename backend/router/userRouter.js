@@ -3,8 +3,9 @@ const router = express.Router()
 
 //Model
 const { User } = require('../models/User'); // Import User model
+const jwtValidate = require('../middleware/jwtValidate');
 
-router.put("/user/:id", async (req, res) => {
+router.put("/user/:id", jwtValidate, async (req, res) => {
     const id = req.params.id;
     try {
         const updatedUser = await User.findByIdAndUpdate(id, req.body, { new: true });
@@ -20,7 +21,7 @@ router.put("/user/:id", async (req, res) => {
 });
 
 // Route to add a new user
-router.post("/user", async (req, res) => {
+router.post("/user", jwtValidate, async (req, res) => {
     const { name, position, image } = req.body;
     try {
         const newUser = new User({ name, position, image });
@@ -45,7 +46,7 @@ router.get("/user", async (req, res) => {
 });
 
 // Route to delete a user by ID
-router.delete("/user/:id", async (req, res) => {
+router.delete("/user/:id", jwtValidate, async (req, res) => {
     const id = req.params.id;
     try {
         const user = await User.findByIdAndDelete(id);
@@ -60,7 +61,7 @@ router.delete("/user/:id", async (req, res) => {
 });
 
 // Route to delete all users
-router.delete("/users", async (req, res) => {
+router.delete("/users", jwtValidate, async (req, res) => {
     try {
         await User.deleteMany({});
         res.json({ message: "All users deleted successfully" });
