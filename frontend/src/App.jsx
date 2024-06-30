@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { login } from "./api/apiFunctions";
+import { useNavigate } from "react-router-dom";
 
 function App() {
   const [year, setYear] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const date = new Date();
@@ -13,7 +16,18 @@ function App() {
     e.preventDefault();
     const formData = new FormData(e.target);
     const formProps = Object.fromEntries(formData);
-    login(formProps).then((res) => console.log(res));
+    login({ username: formProps.username, password: formProps.password }).then(
+      (res) => {
+        if (res) {
+          navigate("Home");
+        }
+
+        console.log(res)
+
+      }
+      
+      
+    ).catch(err => console.log(err))
   };
 
   return (

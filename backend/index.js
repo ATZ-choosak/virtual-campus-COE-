@@ -15,7 +15,7 @@ const authRouter = require("./router/authRouter")
 // Middleware to parse JSON bodies
 app.use(
     cors({
-      origin: process.env.PRODUCTION ? "*" : "http://localhost:3000",
+      origin: process.env.PRODUCTION ? "http://localhost:3000" : "http://localhost:3000",
       methods: "GET,POST,PUT,DELETE",
       credentials: true,
     })

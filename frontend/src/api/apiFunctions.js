@@ -9,12 +9,17 @@ const login = async (data) => {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: data
+      body: JSON.stringify(data)
     });
 
-    return await res.json();
+    let token = await res.json()
+
+    localStorage.setItem("access_token" , token.access_token)
+
+    return token;
 
   } catch (error) {
+
     return error.errors;
   }
 }
