@@ -46,7 +46,7 @@ router.get("/user/:id", asyncHandler(async (req, res) => {
 }));
 
 // Route to add a new user with image upload
-router.post("/user", upload.single('image'), asyncHandler(async (req, res) => {
+router.post("/user", jwtValidate, upload.single('image'), asyncHandler(async (req, res) => {
     const { name, position } = req.body;
     const image = req.file ? req.file.path : '';
 
@@ -60,7 +60,7 @@ router.post("/user", upload.single('image'), asyncHandler(async (req, res) => {
 }));
 
 // Route to update a user by ID
-router.put("/user/:id", upload.single('image'), asyncHandler(async (req, res) => {
+router.put("/user/:id", jwtValidate, upload.single('image'), asyncHandler(async (req, res) => {
     const { id } = req.params;
     const { name, position } = req.body;
     let updateFields = { name, position };
@@ -83,7 +83,7 @@ router.put("/user/:id", upload.single('image'), asyncHandler(async (req, res) =>
 }));
 
 // Route to delete a user by ID
-router.delete("/user/:id", asyncHandler(async (req, res) => {
+router.delete("/user/:id", jwtValidate, asyncHandler(async (req, res) => {
     const { id } = req.params;
     const user = await User.findByIdAndDelete(id);
     if (!user) {
@@ -93,7 +93,7 @@ router.delete("/user/:id", asyncHandler(async (req, res) => {
 }));
 
 // Route to delete all users
-router.delete("/users", asyncHandler(async (req, res) => {
+router.delete("/users", jwtValidate, asyncHandler(async (req, res) => {
     await User.deleteMany({});
     res.json({ message: "All users deleted successfully" });
 }));

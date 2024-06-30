@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { Room } = require('../models/Room'); // Import Room model
 const { User } = require('../models/User'); // Import User model
+const jwtValidate = require("../middleware/jwtValidate")
 
 // Middleware for error handling
 const asyncHandler = fn => (req, res, next) =>
@@ -37,7 +38,7 @@ router.get("/room/:id", asyncHandler(async (req, res) => {
 }));
 
 // Route to add a new room
-router.post("/room", asyncHandler(async (req, res) => {
+router.post("/room", jwtValidate, asyncHandler(async (req, res) => {
     const { room_name, users, description } = req.body;
 
     if (!room_name || !users || !description) {
@@ -50,7 +51,7 @@ router.post("/room", asyncHandler(async (req, res) => {
 }));
 
 // Route to update a room by ID
-router.put("/room/:id", asyncHandler(async (req, res) => {
+router.put("/room/:id", jwtValidate, asyncHandler(async (req, res) => {
     const { id } = req.params;
     const updatedRoom = await Room.findByIdAndUpdate(id, req.body, { new: true });
     if (!updatedRoom) {
@@ -60,7 +61,7 @@ router.put("/room/:id", asyncHandler(async (req, res) => {
 }));
 
 // Route to delete a room by ID
-router.delete("/room/:id", asyncHandler(async (req, res) => {
+router.delete("/room/:id", jwtValidate, asyncHandler(async (req, res) => {
     const { id } = req.params;
     const room = await Room.findByIdAndDelete(id);
     if (!room) {
@@ -70,7 +71,7 @@ router.delete("/room/:id", asyncHandler(async (req, res) => {
 }));
 
 // Route to delete all rooms
-router.delete("/rooms", asyncHandler(async (req, res) => {
+router.delete("/rooms", jwtValidate, asyncHandler(async (req, res) => {
     await Room.deleteMany({});
     res.json({ message: "All rooms deleted successfully" });
 }));
