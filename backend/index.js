@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 const cors = require("cors")
+const path = require('path')
 
 //ENV
 require('dotenv').config()
@@ -11,6 +12,7 @@ require('dotenv').config()
 const roomRouter = require("./router/roomRouter")
 const userRouter = require("./router/userRouter")
 const authRouter = require("./router/authRouter")
+const imageRouter = require("./router/imageRouter")
 
 // Middleware to parse JSON bodies
 app.use(
@@ -21,14 +23,13 @@ app.use(
     })
   );
 app.use(express.json());
-app.use('/uploads', express.static('public/uploads'));
-
-
+app.use(express.static(path.join(__dirname, 'uploads')));
 
 //Use Router
 app.use("/api" , roomRouter)
 app.use("/api" , userRouter)
 app.use("/auth" , authRouter)
+app.use("/api" , imageRouter)
 
 // Database connection
 const connectDB = async () => {

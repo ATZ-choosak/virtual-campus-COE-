@@ -4,11 +4,12 @@ const path = require('path');
 const router = express.Router();
 const { User } = require('../models/User'); // Import User model
 const jwtValidate = require('../middleware/jwtValidate');
+const { Image } = require('../models/Image');
 
 // Multer storage configuration
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, '/uploads'); // Store files in public/uploads folder
+        cb(null, 'uploads'); // Store files in public/uploads folder
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + path.extname(file.originalname)); // Use a unique filename
@@ -48,7 +49,12 @@ router.get("/user/:id", asyncHandler(async (req, res) => {
 // Route to add a new user with image upload
 router.post("/user", jwtValidate, upload.single('image'), asyncHandler(async (req, res) => {
     const { name, position } = req.body;
-    const image = req.file ? req.file.path : '';
+
+    const img = new Image({ path: req.file ? req.file.path : '' })
+
+    await img.save()
+
+    const image = img._id;
 
     if (!name || !position || !image) {
         return res.status(400).json({ message: "All fields are required" });
