@@ -1,8 +1,3 @@
-// const config = {
-//     apiPrefix: 'https://virtual-campus-coe.vercel.app/api',
-//     authPrefix: 'https://virtual-campus-coe.vercel.app/auth',
-//     apiUrl: 'https://virtual-campus-coe.vercel.app'
-// }
 
 const config = {
     apiPrefix: 'http://localhost:6455/api',
