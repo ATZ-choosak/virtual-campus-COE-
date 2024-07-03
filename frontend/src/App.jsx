@@ -44,13 +44,15 @@ function App() {
         <p className="text-lg font-bold">Login to Virtual Campus Admin</p>
         <form onSubmit={submit} className="flex flex-col w-full space-y-5">
           <input
-            className="bg-gray-100 p-4 rounded-lg outline-none"
+            required
+            className="bg-white outline-1 outline-gray-200 p-4 rounded-lg outline-none"
             type="text"
             placeholder="Username"
             name="username"
           />
           <input
-            className="bg-gray-100 p-4 rounded-lg outline-none"
+            required
+            className="bg-white outline-1 outline-gray-200 p-4 rounded-lg outline-none"
             type="password"
             placeholder="Password"
             name="password"
