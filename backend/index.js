@@ -17,19 +17,19 @@ const imageRouter = require("./router/imageRouter")
 // Middleware to parse JSON bodies
 app.use(
     cors({
-      origin: process.env.PRODUCTION ? "*" : "http://localhost:3000",
-      methods: "GET,POST,PUT,DELETE",
-      credentials: true,
+        origin: process.env.PRODUCTION ? "*" : "http://localhost:3000",
+        methods: "GET,POST,PUT,DELETE",
+        credentials: true,
     })
-  );
-app.use(express.json());
+);
+app.use(express.json({ limit: '5mb' }));
 app.use(express.static(path.join(__dirname, 'uploads')));
 
 //Use Router
-app.use("/api" , roomRouter)
-app.use("/api" , userRouter)
-app.use("/auth" , authRouter)
-app.use("/api" , imageRouter)
+app.use("/api", roomRouter)
+app.use("/api", userRouter)
+app.use("/auth", authRouter)
+app.use("/api", imageRouter)
 
 // Database connection
 const connectDB = async () => {
