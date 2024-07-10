@@ -43,7 +43,6 @@ jobs:
         path: ./backend/uploads
 
     - run: cp -r uploads/* /home/atozer/Desktop/uploads/
-    - run: mkdir uploads
     - run: cp -r /home/atozer/Desktop/uploads/* uploads/
 
     - name: Run server
