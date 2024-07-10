@@ -54,9 +54,9 @@ function RoomCard({ data, refetch }) {
           </div>
         </div>
       </Modal>
-      <div className="w-full bg-white shadow-md p-4 rounded-lg space-y-4">
+      <div className="w-full bg-white shadow-md p-4 rounded-lg space-y-4 h-fit">
         <p className="text-lg font-bold">{data.room_name}</p>
-        <p className="text-sm">{data.description}</p>
+        <p className="text-sm truncate">{data.description}</p>
         <div className="w-full h-[1px] bg-gray-200" />
         <div className="w-full flex items-center justify-end space-x-4">
           <button>

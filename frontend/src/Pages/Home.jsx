@@ -141,7 +141,7 @@ function Home() {
               name="room_name"
               placeholder="Room name"
             />
-            <input
+            <textarea
               required
               className="p-2 bg-white outline outline-1 outline-gray-200 rounded-lg outline-none"
               name="description"
