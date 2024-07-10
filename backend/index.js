@@ -23,12 +23,7 @@ app.use(
     })
 );
 app.use(express.json({ limit: '5mb' }));
-
-// Define the path to your uploads directory
-const uploadsPath = path.join('/home', 'atozer', 'Desktop', 'uploads');
-
-// Serve static files from the uploads directory
-app.use(express.static(uploadsPath));
+app.use(express.static(path.join(__dirname, 'uploads')));
 
 //Use Router
 app.use("/api", roomRouter)

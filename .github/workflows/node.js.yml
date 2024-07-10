@@ -17,10 +17,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [21.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
-    
+        node-version: [ 21.x ]
 
     steps:
     - uses: actions/checkout@v4
@@ -39,6 +36,26 @@ jobs:
         touch .env
         echo "${{ secrets.PROD_ENV_FILE }}" > .env
 
+    - name: Persist uploads directory
+      uses: actions/upload-artifact@v2
+      with:
+        name: backend-uploads
+        path: ./backend/uploads
+
     - name: Run server
       run: pm2 restart virtual-campus-api
 
+  deploy:
+    runs-on: self-hosted
+    needs: build
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Download uploads directory
+      uses: actions/download-artifact@v2
+      with:
+        name: backend-uploads
+        path: ./backend/uploads
+
+    # Add deployment steps here
