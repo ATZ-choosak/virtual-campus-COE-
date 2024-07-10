@@ -11,7 +11,7 @@ router.get("/uploads/:id", async (req, res) => {
         return res.status(404).json({ message: "Image not found" });
     }
 
-    res.sendFile(path.join(__dirname, "..", image.path));
+    res.sendFile(image.path);
 
 })
 
