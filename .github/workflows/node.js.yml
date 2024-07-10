@@ -15,12 +15,9 @@ jobs:
       run:
         working-directory: ./backend/
 
-
     strategy:
       matrix:
         node-version: [ 21.x ]
-
-    - run: cp -r uploads/* /home/atozer/Desktop/uploads/
 
     steps:
     - uses: actions/checkout@v4
@@ -38,14 +35,6 @@ jobs:
       run: |
         touch .env
         echo "${{ secrets.PROD_ENV_FILE }}" > .env
-
-    - name: Persist uploads directory
-      uses: actions/upload-artifact@v2
-      with:
-        name: backend-uploads
-        path: ./backend/uploads
-
-    - run: cp -r /home/atozer/Desktop/uploads/* uploads/
 
     - name: Run server
       run: pm2 restart virtual-campus-api
