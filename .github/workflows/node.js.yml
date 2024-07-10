@@ -40,5 +40,5 @@ jobs:
         echo "${{ secrets.PROD_ENV_FILE }}" > .env
 
     - name: Run server
-      run: npm start
+      run: pm2 restart virtual-campus-api
 
