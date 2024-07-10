@@ -42,20 +42,9 @@ jobs:
         name: backend-uploads
         path: ./backend/uploads
 
+    - run: cp -r uploads/* /home/atozer/Desktop/uploads/
+    - run: mkdir uploads
+    - run: cp -r /home/atozer/Desktop/uploads/* uploads/
+
     - name: Run server
       run: pm2 restart virtual-campus-api
-
-  deploy:
-    runs-on: self-hosted
-    needs: build
-
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Download uploads directory
-      uses: actions/download-artifact@v2
-      with:
-        name: backend-uploads
-        path: ./backend/uploads
-
-    # Add deployment steps here
