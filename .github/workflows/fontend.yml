@@ -37,8 +37,8 @@ jobs:
       run: yarn build
 
     - name: Remove old
-      run: rm -rf /var/www/virtual-campus-frontend/*
+      run: sudo rm -rf /var/www/virtual-campus-frontend/*
 
     - name: Copy file
-      run: cp -r dist/* /var/www/virtual-campus-frontend/
+      run: sudo cp -r dist/* /var/www/virtual-campus-frontend/
 
