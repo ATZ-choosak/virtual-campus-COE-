@@ -15,11 +15,12 @@ jobs:
       run:
         working-directory: ./backend/
 
-    - run: cp -r uploads/* /home/atozer/Desktop/uploads/
 
     strategy:
       matrix:
         node-version: [ 21.x ]
+
+    - run: cp -r uploads/* /home/atozer/Desktop/uploads/
 
     steps:
     - uses: actions/checkout@v4
