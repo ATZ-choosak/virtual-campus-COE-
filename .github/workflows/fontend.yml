@@ -20,8 +20,6 @@ jobs:
         node-version: [21.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
-    
-
     steps:
     - uses: actions/checkout@v4
 
@@ -30,10 +28,10 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-        cache-dependency-path: './frontend/package-lock.json'
+        cache-dependency-path: './frontend/yarn.lock'
 
-    - run: yarn install
+    - name: Install dependencies
+      run: yarn install
 
     - name: Build frontend
       run: yarn build
-
