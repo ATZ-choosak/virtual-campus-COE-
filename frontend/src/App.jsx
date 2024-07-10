@@ -68,7 +68,7 @@ function App() {
       <div className="fixed left-0 bottom-4 text-center w-full p-4">
         <p className="text-xs">
           © {year} คณะวิศวกรรมศาสตร์ สาขาวิศวกรรมคอมพิวเตอร์
-          มหาวิทยาลัยสงขลานครินทร์
+          มหาวิทยาลัยสงขลานครินทร์ | Atozer Company
         </p>
       </div>
     </div>
