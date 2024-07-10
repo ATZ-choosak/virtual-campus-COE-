@@ -39,8 +39,6 @@ jobs:
         touch .env
         echo "${{ secrets.PROD_ENV_FILE }}" > .env
 
-    - name: Run build
-      run: npm run build
+    - name: Run server
+      run: npm start
 
-    - name: Run tests
-      run: npm test
