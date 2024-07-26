@@ -50,11 +50,7 @@ router.get("/user/:id", asyncHandler(async (req, res) => {
 router.post("/user", jwtValidate, upload.single('image'), asyncHandler(async (req, res) => {
     const { name, position } = req.body;
 
-    const img = new Image({ path: req.file ? req.file.path : '' })
-
-    await img.save()
-
-    const image = req.file.path;
+    const image = "/uploads/" + req.file.filename;
 
     if (!name || !position || !image) {
         return res.status(400).json({ message: "All fields are required" });
