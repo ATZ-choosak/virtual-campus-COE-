@@ -15,13 +15,14 @@ const authRouter = require("./router/authRouter")
 const imageRouter = require("./router/imageRouter")
 
 // Middleware to parse JSON bodies
-app.use(
-    cors({
-        origin: process.env.PRODUCTION ? "*" : "http://localhost:3000",
-        methods: "GET,POST,PUT,DELETE",
-        credentials: true,
-    })
-);
+// app.use(
+//     cors({
+//         origin: process.env.PRODUCTION ? "*" : "http://localhost:3000",
+//         methods: "GET,POST,PUT,DELETE",
+//         credentials: true,
+//     })
+// );
+app.use(cors())
 app.use(express.json({ limit: '5mb' }));
 app.use(express.static("/home/atozer/Desktop/uploads"));
 
