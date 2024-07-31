@@ -8,6 +8,7 @@ import { Bounce, toast } from "react-toastify";
 // eslint-disable-next-line react/prop-types
 function RoomCard({ data, refetch }) {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [openDetailModal, setOpenDetailModal] = useState(false);
 
   const deleteRoomHandle = () => {
     deleteRoom(data._id).then((res) => {
@@ -54,6 +55,14 @@ function RoomCard({ data, refetch }) {
           </div>
         </div>
       </Modal>
+
+      {/* detail */}
+      <Modal isOpen={openDetailModal}>
+        <div className="p-2 bg-white">
+          <p>{data.room_name}</p>
+        </div>
+      </Modal>
+
       <div className="w-full bg-white shadow-md p-4 rounded-lg space-y-4 h-fit">
         <p className="text-lg font-bold">{data.room_name}</p>
         <p className="text-sm truncate">{data.description}</p>
@@ -75,7 +84,7 @@ function RoomCard({ data, refetch }) {
               />
             </svg>
           </button>
-          <button>
+          <button onClick={() => {setOpenDetailModal(true)}}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
