@@ -24,7 +24,7 @@ const imageRouter = require("./router/imageRouter")
 // );
 app.use(cors())
 app.use(express.json({ limit: '5mb' }));
-app.use("/uploads" , express.static("/home/atozer/Desktop/uploads"));
+app.use("/uploads", express.static(process.env.NODE_ENV === "development" ? path.join(__dirname, "/uploads") : "/home/atozer/Desktop/uploads"));
 
 //Use Router
 app.use("/api", roomRouter)
@@ -46,6 +46,7 @@ const connectDB = async () => {
 
 // Connect to the database before starting the server
 connectDB();
+
 
 app.listen(process.env.PORT, () => {
     console.log(`Server running on port ${process.env.PORT}...`);

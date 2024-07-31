@@ -9,7 +9,7 @@ const { Image } = require('../models/Image');
 // Multer storage configuration
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, '/home/atozer/Desktop/uploads'); // Store files in public/uploads folder
+        process.env.NODE_ENV === "development" ? cb(null, 'uploads') : cb(null, '/home/atozer/Desktop/uploads'); // Store files in public/uploads folder
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + path.extname(file.originalname)); // Use a unique filename

@@ -1,7 +1,7 @@
 import config from "../config"
 
 const imagePath = (id) => {
-    return `${config.apiPrefix}/uploads/${id}`
+    return `${config.fileApiPrefix}${id}`
 }
 
 export default imagePath
