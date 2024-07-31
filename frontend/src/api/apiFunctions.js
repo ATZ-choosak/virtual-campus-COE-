@@ -130,9 +130,31 @@ const deleteRoom = async (id) => {
   }
 }
 
+const editRoom = async (id, data) => {
+  try {
+
+    let token = window.localStorage.getItem("access_token")
+
+    let res = await fetch(`${config.apiPrefix}/room/${id}`, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(data)
+    });
+
+    return await res.json();
+
+  } catch (error) {
+    return error.errors;
+  }
+}
+
 const logout = () => {
   window.localStorage.removeItem("access_token")
   window.location.href = "/"
 }
 
-export { getAllRooms, getAllUsers, login, addRoom, logout, deleteRoom, addUser }
+export { getAllRooms, getAllUsers, login, addRoom, logout, deleteRoom, addUser, editRoom }

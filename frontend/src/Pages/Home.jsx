@@ -216,7 +216,9 @@ function Home() {
         {/* Tabs */}
         <div className="flex mt-20 p-4 min-w-96 items-center justify-center">
           <button
-          onClick={() => {setTab(0)}}
+            onClick={() => {
+              setTab(0);
+            }}
             className={clsx(
               "w-full duration-[0.2s] ease-in-out p-2",
               tab === 0
@@ -227,7 +229,9 @@ function Home() {
             Rooms
           </button>
           <button
-          onClick={() => {setTab(1)}}
+            onClick={() => {
+              setTab(1);
+            }}
             className={clsx(
               "w-full duration-[0.2s] ease-in-out p-2",
               tab === 1

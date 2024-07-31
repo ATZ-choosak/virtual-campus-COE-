@@ -4,11 +4,13 @@ import React, { useState } from "react";
 import Modal from "./Modal";
 import { deleteRoom, logout } from "../api/apiFunctions";
 import { Bounce, toast } from "react-toastify";
+import RoomEdit from "./RoomEdit";
 
 // eslint-disable-next-line react/prop-types
 function RoomCard({ data, refetch }) {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openDetailModal, setOpenDetailModal] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
 
   const deleteRoomHandle = () => {
     deleteRoom(data._id).then((res) => {
@@ -57,10 +59,38 @@ function RoomCard({ data, refetch }) {
       </Modal>
 
       {/* detail */}
-      <Modal isOpen={openDetailModal}>
-        <div className="p-2 bg-white">
-          <p>{data.room_name}</p>
+      <Modal
+        isOpen={openDetailModal}
+        onClose={() => {
+          setOpenDetailModal(false);
+        }}
+      >
+        <div className="p-10 bg-white rounded-lg max-w-lg min-w-80">
+          <p className="font-bold text-lg">{data.room_name}</p>
+          <p>{data.description}</p>
+          <div className="space-y-2 mt-2">
+            {data.users.map((user) => (
+              <p className="bg-blue-200 p-2 rounded-lg" key={user._id}>
+                {user.name}
+              </p>
+            ))}
+          </div>
         </div>
+      </Modal>
+
+      {/* Edit */}
+      <Modal
+        isOpen={openEditModal}
+        onClose={() => {
+          setOpenEditModal(false);
+        }}
+      
+      >
+        <RoomEdit
+          setEditRoomModal={setOpenEditModal}
+          data={data}
+          fetch_room={() => refetch()}
+        />
       </Modal>
 
       <div className="w-full bg-white shadow-md p-4 rounded-lg space-y-4 h-fit">
@@ -68,7 +98,11 @@ function RoomCard({ data, refetch }) {
         <p className="text-sm truncate">{data.description}</p>
         <div className="w-full h-[1px] bg-gray-200" />
         <div className="w-full flex items-center justify-end space-x-4">
-          <button>
+          <button
+            onClick={() => {
+              setOpenEditModal(true);
+            }}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -84,7 +118,11 @@ function RoomCard({ data, refetch }) {
               />
             </svg>
           </button>
-          <button onClick={() => {setOpenDetailModal(true)}}>
+          <button
+            onClick={() => {
+              setOpenDetailModal(true);
+            }}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
