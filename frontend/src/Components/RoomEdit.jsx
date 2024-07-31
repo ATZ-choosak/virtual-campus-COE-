@@ -50,8 +50,6 @@ function RoomEdit({ data, setEditRoomModal, fetch_room }) {
     const formData = new FormData(e.target);
     const formProps = Object.fromEntries(formData);
     formProps["users"] = userSelection;
-
-    console.log(formProps);
     editRoom(data._id, formProps)
       .then((res) => {
         if (!res) {
