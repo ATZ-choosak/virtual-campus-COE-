@@ -7,23 +7,26 @@ import Home from "./Pages/Home.jsx";
 import { ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/ReactToastify.css";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-    loader: () => {
-      if (localStorage.getItem("access_token")) {
-        window.location.href = "/Home";
-      }
+const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <App />,
+      loader: () => {
+        if (localStorage.getItem("access_token")) {
+          window.location.href = "/Home";
+        }
 
-      return null;
+        return null;
+      },
     },
-  },
-  {
-    path: "/home",
-    element: <Home />,
-  },
-]);
+    {
+      path: "/home",
+      element: <Home />,
+    },
+  ],
+  { basename: "/admin" }
+);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
