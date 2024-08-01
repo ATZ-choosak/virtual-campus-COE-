@@ -39,13 +39,13 @@ router.get("/room/:id", asyncHandler(async (req, res) => {
 
 // Route to add a new room
 router.post("/room", jwtValidate, asyncHandler(async (req, res) => {
-    const { room_name, users, description } = req.body;
+    const { room_id, room_name, users, description } = req.body;
 
-    if (!room_name || !users || !description) {
+    if (!room_id || !room_name || !users || !description) {
         return res.status(400).json({ message: "All fields are required" });
     }
 
-    const newRoom = new Room({ room_name, users, description });
+    const newRoom = new Room({ room_id, room_name, users, description });
     await newRoom.save();
     res.status(200).json(newRoom);
 }));

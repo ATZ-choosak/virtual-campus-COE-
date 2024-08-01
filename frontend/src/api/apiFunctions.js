@@ -108,6 +108,48 @@ const addUser = async (data) => {
   }
 }
 
+const editUser = async (id, data) => {
+  try {
+
+    let token = window.localStorage.getItem("access_token")
+
+    let res = await fetch(`${config.apiPrefix}/user/${id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      body: data
+    });
+
+    return await res.json();
+
+  } catch (error) {
+    return error.errors;
+  }
+}
+
+const deleteUser = async (id) => {
+
+  try {
+
+    let token = window.localStorage.getItem("access_token")
+
+    let res = await fetch(`${config.apiPrefix}/user/${id}`, {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+    });
+
+    return await res.json();
+
+  } catch (error) {
+    return error.errors;
+  }
+}
+
 const deleteRoom = async (id) => {
 
   try {
@@ -157,4 +199,4 @@ const logout = () => {
   window.location.href = "/"
 }
 
-export { getAllRooms, getAllUsers, login, addRoom, logout, deleteRoom, addUser, editRoom }
+export { getAllRooms, getAllUsers, login, addRoom, logout, deleteRoom, addUser, editRoom, deleteUser, editUser }

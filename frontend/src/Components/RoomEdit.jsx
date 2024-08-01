@@ -76,12 +76,21 @@ function RoomEdit({ data, setEditRoomModal, fetch_room }) {
   return (
     <div className="p-4 bg-white rounded-lg shadow-md w-80">
       <form onSubmit={editRoomSubmit} className="flex flex-col space-y-5">
+      <input
+          defaultValue={data.room_id}
+          required
+          className="p-2 bg-white outline outline-1 outline-gray-200 rounded-lg outline-none"
+          name="room_id"
+          placeholder="Room ID"
+          type="text"
+        />
         <input
           defaultValue={data.room_name}
           required
           className="p-2 bg-white outline outline-1 outline-gray-200 rounded-lg outline-none"
           name="room_name"
           placeholder="Room name"
+          type="text"
         />
         <textarea
           required
@@ -89,6 +98,7 @@ function RoomEdit({ data, setEditRoomModal, fetch_room }) {
           className="p-2 bg-white outline outline-1 outline-gray-200 rounded-lg outline-none"
           name="description"
           placeholder="Room description"
+          type="text"
         />
         <Select
           options={userOptions}

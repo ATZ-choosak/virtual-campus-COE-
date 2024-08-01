@@ -138,14 +138,23 @@ function Home() {
             <input
               required
               className="p-2 bg-white outline outline-1 outline-gray-200 rounded-lg outline-none"
+              name="room_id"
+              placeholder="Room ID"
+              type="text"
+            />
+            <input
+              required
+              className="p-2 bg-white outline outline-1 outline-gray-200 rounded-lg outline-none"
               name="room_name"
               placeholder="Room name"
+              type="text"
             />
             <textarea
               required
               className="p-2 bg-white outline outline-1 outline-gray-200 rounded-lg outline-none"
               name="description"
               placeholder="Room description"
+              type="text"
             />
             <Select
               options={userOptions}
@@ -177,12 +186,21 @@ function Home() {
               className="p-2 bg-white outline outline-1 outline-gray-200 rounded-lg outline-none"
               name="name"
               placeholder="name"
+              type="text"
             />
             <input
               required
               className="p-2 bg-white outline outline-1 outline-gray-200 rounded-lg outline-none"
               name="position"
               placeholder="user position"
+              type="text"
+            />
+            <input
+              required
+              className="p-2 bg-white outline outline-1 outline-gray-200 rounded-lg outline-none"
+              name="email"
+              placeholder="email"
+              type="email"
             />
             <label>Image profile</label>
             <div className="w-full flex items-center justify-center">
@@ -249,7 +267,7 @@ function Home() {
                   <RoomCard key={data._id} data={data} refetch={fetch_room} />
                 ))
               : null
-            : users.map((data) => <UserCard key={data._id} data={data} />)}
+            : users.map((data) => <UserCard key={data._id} data={data} refetch={fetch_user} />)}
         </div>
       </div>
     </React.Fragment>

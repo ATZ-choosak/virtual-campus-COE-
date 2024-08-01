@@ -48,7 +48,7 @@ router.get("/user/:id", asyncHandler(async (req, res) => {
 
 // Route to add a new user with image upload
 router.post("/user", jwtValidate, upload.single('image'), asyncHandler(async (req, res) => {
-    const { name, position } = req.body;
+    const { name, position, email } = req.body;
 
     const image = "/uploads/" + req.file.filename;
 
@@ -56,7 +56,7 @@ router.post("/user", jwtValidate, upload.single('image'), asyncHandler(async (re
         return res.status(400).json({ message: "All fields are required" });
     }
 
-    const newUser = new User({ name, position, image });
+    const newUser = new User({ name, position, image, email });
     await newUser.save();
     res.status(200).json(newUser);
 }));
@@ -64,12 +64,11 @@ router.post("/user", jwtValidate, upload.single('image'), asyncHandler(async (re
 // Route to update a user by ID
 router.put("/user/:id", jwtValidate, upload.single('image'), asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const { name, position } = req.body;
-    let updateFields = { name, position };
+    let updateFields = req.body;
 
     // Check if image is uploaded
     if (req.file) {
-        updateFields.image = req.file.path;
+        updateFields.image = "/uploads/" + req.file.filename;;
     }
 
     try {
