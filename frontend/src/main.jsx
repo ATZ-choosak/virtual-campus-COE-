@@ -24,8 +24,7 @@ const router = createBrowserRouter(
       path: "/home",
       element: <Home />,
     },
-  ],
-  { basename: "/admin" }
+  ]
 );
 
 ReactDOM.createRoot(document.getElementById("root")).render(
