@@ -2,9 +2,9 @@ name: Node.js CI/CD
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "backend" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "backend" ]
 
 jobs:
   build:
@@ -15,26 +15,19 @@ jobs:
       run:
         working-directory: ./backend/
 
-    strategy:
-      matrix:
-        node-version: [ 21.x ]
-
     steps:
     - uses: actions/checkout@v4
-
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-        cache-dependency-path: './backend/package-lock.json'
-
-    - run: npm ci
 
     - name: Set up .env file
       run: |
         touch .env
-        echo "${{ secrets.PROD_ENV_FILE }}" > .env
+        echo "${{ secrets.ACCESS_TOKEN_SECRET }}" > .env
+        echo "${{ secrets.DATABASE_URL }}" > .env
+        echo "${{ secrets.NODE_ENV }}" > .env
+        echo "${{ secrets.PORT }}" > .env
 
-    - name: Run server
-      run: pm2 restart virtual-campus-api
+    # Build and start services using Docker Compose
+    - name: Build and start Docker Compose
+      run: |
+        docker-compose down
+        docker-compose up -d

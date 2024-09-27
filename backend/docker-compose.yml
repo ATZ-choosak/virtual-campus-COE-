@@ -1,0 +1,16 @@
+version: '3'
+services:
+  app:
+    build: .
+    container_name: virtual-compus-backend
+    ports:
+      - "6455:6455"
+    volumes:
+      - .:/app              # Mount the current directory into the container
+      - virtual-compus-backend:/app/data   # Persist data in the /app/data directory
+      - /app/node_modules    # Exclude node_modules from being mounted to avoid conflicts
+    env_file:
+      - .env
+
+volumes:
+  virtual-compus-backend:
