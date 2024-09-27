@@ -21,10 +21,10 @@ jobs:
     - name: Set up .env file
       run: |
         touch .env
-        echo "${{ secrets.ACCESS_TOKEN_SECRET }}" > .env
-        echo "${{ secrets.DATABASE_URL }}" > .env
-        echo "${{ secrets.NODE_ENV }}" > .env
-        echo "${{ secrets.PORT }}" > .env
+        echo ACCESS_TOKEN_SECRET="${{ secrets.ACCESS_TOKEN_SECRET }}" > .env
+        echo DATABASE_URL="${{ secrets.DATABASE_URL }}" >> .env
+        echo NODE_ENV="${{ secrets.NODE_ENV }}" >> .env
+        echo PORT="${{ secrets.PORT }}" >> .env
 
     # Build and start services using Docker Compose
     - name: Build and start Docker Compose
